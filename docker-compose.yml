@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: AwesomeCSharpNvimDB
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    expose:
+      - "5433"
+    ports:
+      - "5433:5433"
+    command: -p 5433
+  awesomecsharpnvim:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
+
+networks:
+  default:
+    driver: bridge
